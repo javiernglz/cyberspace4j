@@ -4,7 +4,7 @@ description: 'Guía para analizar adjuntos y enlaces sospechosos (Blue Team).'
 pubDate: '2025-12-21'
 categories: ['Blue Team']
 tags: ['malware', 'analisis', 'forense']
-heroImage: '/blog-placeholder-3.jpg'
+heroImage: '../../assets/Portadas/iniciociber.png'
 ---
 
 A continuación se detallan los diferentes métodos y herramientas para verificar la legitimidad de archivos y enlaces web.

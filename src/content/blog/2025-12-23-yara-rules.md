@@ -4,7 +4,7 @@ description: 'Cómo crear reglas YARA para detectar amenazas.'
 pubDate: '2025-12-23'
 categories: ['Blue Team']
 tags: ['yara', 'threat hunting', 'blue team']
-heroImage: '/blog-placeholder-5.jpg'
+heroImage: '../../assets/Portadas/iniciociber.png'
 ---
 
 **YARA** es una herramienta esencial para identificar y clasificar malware basándose en patrones (secuencias de texto o bytes) en lugar de nombres de archivo o hashes. Permite crear reglas personalizadas para detectar amenazas que los antivirus tradicionales podrían ignorar.
