@@ -8,31 +8,32 @@
     --gray: 96, 115, 159;
     --gray-light: 229, 233, 240;
     --gray-dark: 34, 41, 57;
-    
-    /* Fondo base BLANCO para toda la web */
     --bg-color: #ffffff; 
-    
-    /* El degradado original de Bear Blog */
     --gray-gradient: rgba(var(--gray-light), 50%), #fff; 
-    
     --box-shadow: 0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%), 0 16px 32px rgba(var(--gray), 33%);
 }
 
-/* -- Variables Modo Oscuro (Hacker) -- */
+/* -- Variables Modo Oscuro (Deep Purple Premium) -- */
 .dark {
-    --accent: #35ff00;          /* Verde Hacker */
-    --accent-dark: #20b800;
-    --black: 220, 220, 220;     /* Texto claro */
-    --gray: 150, 150, 150;
-    --gray-dark: 200, 200, 200;
+    /* Fondo base: Casi negro con un matiz profundo */
+    --bg-color: #0b0a10; 
     
-    /* Fondo base NEGRO para toda la web */
-    --bg-color: #0d1117; 
+    /* Texto principal: Blanco hueso (Slate 200) para no cansar la vista */
+    --black: 226, 232, 240; 
     
-    /* En modo oscuro, el degradado es sólido (negro sobre negro) */
-    --gray-gradient: #0d1117, #0d1117;
+    /* Texto secundario: Gris azulado (Slate 400) */
+    --gray: 148, 163, 184;
     
-    --gray-light: 22, 27, 34;   /* Bloques de código oscuros */
+    /* Bloques de código/pre: Un poco más claros que el fondo */
+    --gray-light: 22, 27, 34;
+    --gray-dark: 226, 232, 240;
+    
+    /* Acento: Violeta Neón (Purple 600/700) */
+    --accent: #7c3aed;
+    --accent-dark: #4c1d95;
+    
+    /* Gradiente fallback */
+    --gray-gradient: #0b0a10, #0b0a10;
 }
 
 @font-face {
@@ -42,6 +43,7 @@
     font-style: normal;
     font-display: swap;
 }
+
 @font-face {
     font-family: "Atkinson";
     src: url("/fonts/atkinson-bold.woff") format("woff");
@@ -55,20 +57,30 @@ body {
     margin: 0;
     padding: 0;
     text-align: left;
-    
-    /* --- AQUÍ ESTÁ EL ARREGLO --- */
-    background-color: var(--bg-color); /* Color de fondo infinito */
-    background-image: linear-gradient(var(--gray-gradient)); /* Textura superior */
+    background-color: var(--bg-color);
+    background-image: linear-gradient(var(--gray-gradient));
     background-repeat: no-repeat;
     background-size: 100% 600px;
-    /* ---------------------------- */
-    
     word-wrap: break-word;
     overflow-wrap: break-word;
-    color: rgb(var(--black)); /* Usa la variable dinámica para el texto */
+    color: rgb(var(--black));
     font-size: 20px;
     line-height: 1.7;
-    transition: background-color 0.3s, color 0.3s; /* Suavidad al cambiar */
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* --- AJUSTE ESPECIAL PARA EL FONDO DARK MODE --- */
+html.dark body {
+    background-color: var(--bg-color);
+    /* Efecto de luz "amanecer nocturno" morado arriba al centro */
+    background-image: 
+        radial-gradient(
+            circle at 50% 0%, 
+            #1e1b4b 0%,     /* Azul noche / Morado oscuro */
+            #0b0a10 60%     /* Fundido a negro */
+        );
+    background-attachment: fixed; /* El fondo se queda fijo al hacer scroll */
+    color: rgb(var(--black));
 }
 
 main {
@@ -92,19 +104,11 @@ h5 { font-size: 1.25em; }
 
 strong, b { font-weight: 700; }
 
-a {
-    color: var(--accent);
-}
-a:hover {
-    color: var(--accent);
-}
+a { color: var(--accent); }
+a:hover { color: var(--accent); }
 
 p { margin-bottom: 1em; }
 .prose p { margin-bottom: 2em; }
-
-textarea { width: 100%; font-size: 16px; }
-input { font-size: 16px; }
-table { width: 100%; }
 
 img {
     max-width: 100%;
@@ -114,17 +118,17 @@ img {
 
 code {
     padding: 2px 5px;
-    background-color: rgb(var(--gray-light)); /* Se oscurece en modo dark */
+    background-color: rgb(var(--gray-light));
     border-radius: 2px;
 }
+
 pre {
     padding: 1.5em;
     border-radius: 8px;
-    background-color: rgb(var(--gray-light)); /* Se oscurece en modo dark */
+    background-color: rgb(var(--gray-light));
 }
-pre > code {
-    all: unset;
-}
+
+pre > code { all: unset; }
 
 blockquote {
     border-left: 4px solid var(--accent);
@@ -132,28 +136,101 @@ blockquote {
     margin: 0;
     font-size: 1.333em;
 }
+
 hr {
     border: none;
     border-top: 1px solid rgb(var(--gray-light));
 }
 
-@media (max-width: 720px) {
-    body { font-size: 18px; }
-    main { padding: 1em; }
+/* --- UTILIDAD ACCESIBILIDAD (Ocultar texto visualmente) --- */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
 }
 
-/* src/styles/global.css - AÑADIR AL FINAL */
+/* --- SISTEMA DE TAGS "PIXEL PERFECT" (ESTILO BYTEBYTEGO) --- */
 
-.sr-only {
-    border: 0;
-    padding: 0;
-    margin: 0;
-    position: absolute !important;
-    height: 1px;
-    width: 1px;
-    overflow: hidden;
-    clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
-    clip: rect(1px, 1px, 1px, 1px);
-    clip-path: inset(50%);
-    white-space: nowrap;
+.tag-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 14px 0;
+    align-items: center;
+}
+
+.tag-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+    padding: 0 10px;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    text-transform: capitalize;
+    text-decoration: none;
+    border: 1px solid transparent; 
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+    --bg-pill: #f3f4f6;
+    --text-pill: #4b5563;
+    --border-pill: transparent;
+
+    background-color: var(--bg-pill);
+    color: var(--text-pill) !important;
+    border-color: var(--border-pill);
+}
+
+/* --- PALETA DE COLORES DE TAGS --- */
+
+/* Azul */
+.tag-blue-team, .tag-docker, .tag-kubernetes, .tag-cloud { 
+    --bg-pill: #eff6ff; --text-pill: #2563eb;
+}
+
+/* Rojo */
+.tag-red-team, .tag-hacking, .tag-pentesting, .tag-exploit { 
+    --bg-pill: #fef2f2; --text-pill: #dc2626;
+}
+
+/* Verde */
+.tag-yara, .tag-malware, .tag-threat-hunting, .tag-blue-team-defense { 
+    --bg-pill: #f0fdf4; --text-pill: #16a34a;
+}
+
+/* Morado */
+.tag-metasploit, .tag-ecpptv3, .tag-certificaciones { 
+    --bg-pill: #faf5ff; --text-pill: #9333ea;
+}
+
+/* Ámbar */
+.tag-vulnerabilidades, .tag-herramientas, .tag-tools { 
+    --bg-pill: #fffbeb; --text-pill: #d97706;
+}
+
+
+/* --- TAGS EN MODO OSCURO --- */
+.dark .tag-pill {
+    /* Fondo con transparencia del color del texto */
+    background-color: rgba(from var(--text-pill) r g b / 0.15);
+    color: var(--text-pill) !important; 
+    border-color: rgba(from var(--text-pill) r g b / 0.1); 
+}
+
+.tag-pill:hover {
+    transform: translateY(-1px);
+    filter: brightness(0.97); 
+}
+.dark .tag-pill:hover {
+    filter: brightness(1.2);
+    background-color: rgba(from var(--text-pill) r g b / 0.25);
 }

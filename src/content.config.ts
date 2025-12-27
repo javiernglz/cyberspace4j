@@ -2,20 +2,23 @@ import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
 const blog = defineCollection({
-    // Load Markdown and MDX files in the `src/content/blog/` directory.
+    // Cargamos los archivos Markdown y MDX de la carpeta blog
     loader: glob({ base: './src/content/blog', pattern: '**/*.{md,mdx}' }),
-    // Type-check frontmatter using a schema
+    
+    // Esquema unificado para validar el Frontmatter
     schema: ({ image }) =>
         z.object({
             title: z.string(),
             description: z.string(),
-            // Transform string to Date object
             pubDate: z.coerce.date(),
             updatedDate: z.coerce.date().optional(),
-            heroImage: image().optional(),
-            // ESTA ES LA LÍNEA NUEVA
+            // Usamos image() para procesar las portadas desde src/assets/
+            heroImage: image().optional(), 
+            // Añadimos ambos campos como opcionales
             categories: z.array(z.string()).optional(),
+            tags: z.array(z.string()).optional(),
         }),
 });
 
+// Exportamos la colección
 export const collections = { blog };
