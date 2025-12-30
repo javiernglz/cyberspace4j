@@ -5,6 +5,7 @@ pubDate: '2025-12-24'
 categories: ['Red Team']
 tags: ['docker', 'pentesting', 'linux', 'privesc']
 heroImage: '../../assets/img/docker_infografia.png'
+slug: "docker-vuln"
 ---
 
 Recientemente me encontré con un escenario que ilustra perfectamente uno de los riesgos más comunes en este tipo de entornos: la exposición innecesaria del socket de Docker.

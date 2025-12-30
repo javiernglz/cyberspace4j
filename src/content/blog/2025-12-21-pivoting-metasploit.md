@@ -5,6 +5,8 @@ pubDate: '2025-12-21'
 categories: ['Red Team']
 tags: ['metasploit', 'pivoting', 'linux', 'lateral movement']
 heroImage: '../../assets/img/pivoting-metasploit-linux.jpg'
+slug: "pivoting-metasploit"
+
 ---
 
 El **Pivoting** (o movimiento lateral) es una técnica crucial en el pentesting que nos permite utilizar un sistema comprometido para atacar otros sistemas en la misma red que no son accesibles directamente.

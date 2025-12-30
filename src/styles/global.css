@@ -248,20 +248,20 @@ code {
 .tag-critical, .tag-high, .tag-error, .tag-bug, 
 .tag-danger, .tag-red, .tag-pentesting, .tag-cve-critical {
     --bg-pill: #fee2e2;
-    --text-pill: #991b1b;
-    --border-pill: #fca5a5;
+    --text-pill: #b52e2e;
+    --border-pill: #f69b9b;
 }
 
 /* 🍷 BURDEOS / VINO (Root, Kernel, Arquitectura, Legacy) */
 .tag-root, .tag-kernel, .tag-boot, .tag-bios, 
-.tag-architecture, .tag-legacy, .tag-burdeos {
-    --bg-pill: #ffe4e6;
+.tag-architecture, .tag-redteam, .tag-burdeos {
+    --bg-pill: #f0d1d4;
     --text-pill: #881337; 
     --border-pill: #fda4af;
 }
 
 /* 🧞 ÍNDIGO (Dev, API, SQL, GraphQL) */
-.tag-api, .tag-graphql, .tag-rest, .tag-sql, 
+.tag-api, .tag-web-exploitation, .tag-rest, .tag-sql, 
 .tag-database, .tag-dev, .tag-indigo, .tag-coding {
     --bg-pill: #e0e7ff;
     --text-pill: #3730a3; 
@@ -269,7 +269,7 @@ code {
 }
 
 /* ☀️ AMARILLO (JS, Python, Warnings, Config) */
-.tag-javascript, .tag-js, .tag-python, .tag-warning, 
+.tag-javascript, .tag-js, .tag-python, .tag-owasp, 
 .tag-config, .tag-yellow, .tag-json, .tag-yaml {
     --bg-pill: #fef9c3;
     --text-pill: #854d0e; 
@@ -285,7 +285,7 @@ code {
 }
 
 /* ☁️ TURQUESA / CIAN (Cloud, Redes, Docker) */
-.tag-docker, .tag-kubernetes, .tag-cloud, .tag-aws, 
+.tag-docker, .tag-kubernetes, .tag-cloud, .tag-pivoting, 
 .tag-azure, .tag-network, .tag-redes, .tag-sysadmin { 
     --bg-pill: #cffafe; 
     --text-pill: #155e75; 
@@ -302,7 +302,7 @@ code {
 }
 
 /* 🟠 NARANJA (Sistemas, Web, Apache) */
-.tag-web, .tag-apache, .tag-nginx, .tag-http, 
+.tag-web, .tag-apache, .tag-burp-suite, .tag-http, 
 .tag-linux, .tag-ubuntu, .tag-kali, .tag-orange { 
     --bg-pill: #ffedd5; 
     --text-pill: #c2410c; 

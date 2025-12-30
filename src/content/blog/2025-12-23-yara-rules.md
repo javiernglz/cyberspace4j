@@ -5,6 +5,8 @@ pubDate: '2025-12-23'
 categories: ['Blue Team']
 tags: ['yara', 'threat hunting', 'blue team']
 heroImage: '../../assets/Portadas/iniciociber.png'
+slug: "yara-rules"
+
 ---
 
 **YARA** es una herramienta esencial para identificar y clasificar malware basándose en patrones (secuencias de texto o bytes) en lugar de nombres de archivo o hashes. Permite crear reglas personalizadas para detectar amenazas que los antivirus tradicionales podrían ignorar.

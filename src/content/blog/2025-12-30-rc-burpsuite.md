@@ -3,9 +3,9 @@ title: "Compras sin Stock: Explotando Race Conditions con Burp Suite"
 description: "Las fases para detectar y explotar vulnerabilidades de Condición de Carrera (TOCTOU) en compras utilizando la paralelización de peticiones."
 pubDate: 2025-12-30
 author: "Javier N. González"
-category: "Red Team"
+categories: ['Red Team']
 tags: ["Web Exploitation", "Burp Suite", "OWASP"]
-slug: "explotando-race-conditions-burp-suite"
+slug: "race-conditions-burp-suite"
 ---
 
 Las vulnerabilidades lógicas suelen ser las más peligrosas porque no dependen de un fallo en el código, sino de un fallo en el diseño del proceso. Hoy vamos a analizar una de las más clásicas en entornos de compras online: la **Condición de Carrera** (Race Condition), específicamente del tipo *Time-of-Check to Time-of-Use* (TOCTOU).
@@ -30,13 +30,13 @@ Si logramos meter 10 peticiones entre el paso 1 y el 3, todas leerán "Stock = 1
 
 Lo primero es configurar Burp Suite para que no bloquee el tráfico mientras navegamos. Nos aseguramos de que en la pestaña **Proxy Intercept** el botón principal está desactivado (Intercept is off) para poder realizar la compra normal en el navegador. Navegamos por la aplicación de forma legítima hasta el momento final de la compra,es decir, hasta el botón de pagar o confirmar pedido.
 
-![Burp Suite con el Proxy Intercept desactivado](/images/1-burp-intercept-off.png)
+![Burp Suite con el Proxy Intercept desactivado](../../assets/img/1-burp-intercept-off.png)
 
 Acto seguido, activamos el **Proxy Intercept** en Burp Suite y vamos a la pestaña **HTTP history** para encontrar la petición POST encargada de finalizar la transacción.
 
 > **Nota:** Buscamos parámetros que indiquen una transacción de estado, como `/checkout`, `/finalize` o `/buy` (en este caso, checkout es la palabra clave).
 
-![Historial de peticiones en Burp Suite mostrando el endpoint checkout](/images/2-burp-history.png)
+![Historial de peticiones en Burp Suite mostrando el endpoint checkout](../../assets/img/2-burp-history.png)
 
 ---
 
@@ -52,7 +52,7 @@ Para explotar una Race Condition, nuestros clicks por muy rápido que sean, no n
 
 El objetivo es tener una batería de peticiones idénticas listas para ser lanzadas.
 
-![Grupo de pestañas en Repeater preparadas para el ataque](/images/3-burp-repeater-group.png)
+![Grupo de pestañas en Repeater preparadas para el ataque](../../assets/img/3-burp-repeater-group.png)
 ---
 
 ## Fase 3: Configuración del Ataque (Parallel Send)
@@ -66,7 +66,7 @@ Necesitamos que salgan a la vez.
 
 Esta opción utiliza una técnica de sincronización de último byte: Burp envía el 99% de cada petición y las deja esperando. Cuando todas están listas, suelta el último byte de todas simultáneamente, maximizando la probabilidad de que lleguen al servidor en el mismo instante.
 
-![Configuración de envío paralelo en Burp Suite](/images/4-burp-parallel-config.png)
+![Configuración de envío paralelo en Burp Suite](../../assets/img/4-burp-parallel-config.png)
 ---
 
 ## Fase 4: Ejecución y Verificación

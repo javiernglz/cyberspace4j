@@ -5,6 +5,8 @@ pubDate: 2025-12-28
 author: "Javier N. González"
 categories: ['Blue Team']
 tags: ["Apache", "blueteam", "splunk", "RCE"]
+slug: "rce-splunk"
+
 ---
 
 Hace poco investigué un incidente en una aplicación web sobre Windows. Los logs mostraban peticiones largas HTTP y trozos en Base64. **Spoiler: Era un intento de Ejecución Remota de Código (RCE).**

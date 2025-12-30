@@ -5,6 +5,8 @@ pubDate: '2025-12-03'
 categories: ['Docencia']
 tags: ['clases', 'roadmap', 'hacking', 'blue team']
 heroImage: '../../assets/Portadas/iniciociber.png'
+slug: "cyber-classes"
+
 ---
 
 Como docente, he impartido varias sesiones cubriendo los pilares de la seguridad ofensiva y defensiva. A continuación, comparto el material visual y las diapositivas utilizadas en clase.
