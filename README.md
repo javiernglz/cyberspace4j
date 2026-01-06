@@ -1,62 +1,33 @@
-# Astro Starter Kit: Blog
+# 🚀 CyberSpace4J
 
-```sh
-npm create astro@latest -- --template blog
-```
+Bienvenido al repositorio oficial de **CyberSpace4J**, mi blog personal y base de conocimiento sobre **Ciberseguridad**.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Aquí documento mi aprendizaje continuo, comparto recursos técnicos y publico guías sobre:
+*  **Red Team:** Pentesting, Active Directory, Hacking Ético.
+*  **Blue Team:** Threat Hunting, Análisis de Malware (YARA), SIEMs (Splunk).
+*  **Certificaciones:** Guías y reviews (eJPT, eCPPTv3).
+*  **Docencia:** Mis documentos impartidos en clase sobre diferntes temas de la seguridad informática.
 
-Features:
+🔗 **Visita el blog:** [cyberspace4j.github.io](https://cyberspace4j.github.io)
 
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
+## 🛠️ Tecnologías
 
-## 🚀 Project Structure
+Este portafolio está construido buscando el máximo rendimiento, seguridad y SEO:
 
-Inside of your Astro project, you'll see the following folders and files:
+* **[Astro](https://astro.build/):** Framework principal para generar el sitio estático.
+* **TypeScript:** Para un desarrollo robusto y tipado.
+* **Markdown/MDX:** Formato utilizado para la redacción de artículos técnicos.
+* **GitHub Pages:** Alojamiento y despliegue continuo (CI/CD).
 
-```text
-├── public/
-├── src/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
-```
+## 📂 Estructura del Proyecto
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+* `src/content/blog/`: Contiene todos los artículos y writeups.
+* `src/pages/`: Estructura de rutas del sitio web.
+* `src/components/`: Componentes reutilizables (Header, Footer, Cards).
+* `public/`: Assets estáticos, imágenes y diagramas.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## 👤 Autor
 
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-
-## Credit
-
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+**Javier N. González**
+* *Cybersecurity Analyst & CTF Player*
+* [LinkedIn](https://www.linkedin.com/in/javier-n-gonz%C3%A1lez-504862331/)
