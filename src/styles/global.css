@@ -333,84 +333,113 @@ code {
 }
 
 /* =============================================================================
-   8. COMPONENTE: BLOQUES DE CÓDIGO AVANZADOS (INPUT vs OUTPUT)
+   8. COMPONENTE: BLOQUES DE CÓDIGO AVANZADOS (ESTILO TERMINAL MACOS)
 =============================================================================
 */
 
 /* 1. Configuración Base para todos los bloques de código */
 pre {
     position: relative;
-    padding-top: 2.5em !important;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    border: 2px solid transparent; 
-    
-    font-size: 0.85em;  /* Reducción al 85% */
-    line-height: 1.6;   /* Aire entre líneas */
-    
-    border-radius: 8px;
-    background-color: rgb(var(--gray-light));
+    padding: 3.5em 1.5em 1.5em 1.5em !important; /* Más espacio arriba para la barra de título */
+    margin: 1.5em 0;
+    overflow: auto; /* Scroll si es necesario */
+    border-radius: 12px; /* Bordes más redondeados */
+    font-size: 0.9em;  
+    line-height: 1.7;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Borde sutil */
 }
 
-pre > code { all: unset; }
+/* Scrollbar personalizada para el código */
+pre::-webkit-scrollbar {
+    height: 8px;
+}
+pre::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
 
-/* 2. Estilo Base de la Etiqueta (Badge) */
+pre > code { 
+    all: unset;
+    font-family: 'Menlo', 'Monaco', 'Courier New', monospace; /* Fuente más 'hacker' */
+    font-weight: 400;
+}
+
+/* 2. Barra de Título (Botones MacOS) */
+/* Se aplica a TODOS los bloques de código por defecto */
+pre::after {
+    content: " ";
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #ff5f56; /* Rojo */
+    box-shadow: 20px 0 0 #ffbd2e, 40px 0 0 #27c93f; /* Amarillo y Verde */
+}
+
+/* 3. Etiqueta de Lenguaje (Badge a la derecha) */
 pre::before {
     position: absolute;
-    top: 0;
-    right: 0;
-    padding: 4px 12px;
+    top: 10px;
+    right: 15px;
+    padding: 4px 10px;
     font-size: 0.7rem; 
-    font-weight: 800;
+    font-weight: 600;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    border-bottom-left-radius: 8px;
+    border-radius: 6px;
     pointer-events: none;
-    font-family: "Atkinson", sans-serif;
-    z-index: 10;
+    font-family: system-ui, -apple-system, sans-serif;
+    opacity: 0.8;
 }
 
-/* --- TIPO 1: CONSULTAS / INPUT (Bash, Shell) --- */
+/* --- TIPO 1: TERMINAL / INPUT (Negro profundo, estilo hacker) --- */
 pre.language-bash, pre.language-sh, pre.language-shell,
 pre[data-language="bash"], pre[data-language="sh"], pre[data-language="shell"] {
-    border-color: var(--accent); 
-    background-color: rgba(var(--accent-dark), 0.05);
+    background-color: #0d1117 !important; /* Negro GitHub Dark */
+    color: #e6edf3;
+    border: 1px solid #30363d;
 }
 
 pre.language-bash::before, pre[data-language="bash"]::before,
 pre.language-sh::before, pre[data-language="sh"]::before,
 pre.language-shell::before, pre[data-language="shell"]::before {
-    content: "⌨️ COMANDO";
-    background-color: var(--accent);
-    color: #ffffff;
+    content: "terminal";
+    color: #8b949e;
+    background: rgba(255,255,255,0.05);
 }
 
-/* --- TIPO 2: RESULTADOS / OUTPUT (Texto plano) --- */
+/* --- TIPO 2: RESULTADOS / OUTPUT (Gris azulado, sin botones) --- */
+/* A veces queremos diferenciar el output quitándole los botones de ventana */
 pre.language-text, pre.language-plaintext,
 pre[data-language="text"], pre[data-language="plaintext"] {
-    border-color: #475569; 
-    background-color: #1e293b !important; 
+    background-color: #161b22 !important; 
+    border: 1px solid #30363d;
+    color: #8b949e; /* Texto grisáceo para indicar que es output */
+    padding-top: 2.5em !important; /* Menos padding porque no tendrá botones */
+}
+
+/* Quitamos los botones de colores para el output */
+pre.language-text::after, pre.language-plaintext::after,
+pre[data-language="text"]::after, pre[data-language="plaintext"]::after {
+    display: none;
+}
+
+pre.language-text::before, pre[data-language="text"]::before,
+pre.language-plaintext::before, pre[data-language="plaintext"]::before {
+    content: "output";
+    color: #6e7681;
+    background: transparent;
+    border: 1px solid #30363d;
 }
 
 /* Ajuste específico para el texto dentro del output */
 pre[data-language="text"] > code,
 pre[data-language="plaintext"] > code {
-    color: #e2e8f0 !important; 
     opacity: 0.9;
-}
-
-pre.language-text::before, pre[data-language="text"]::before,
-pre.language-plaintext::before, pre[data-language="plaintext"]::before {
-    content: "🖥️ SALIDA";
-    background-color: #475569; 
-    color: #f1f5f9;
-}
-
-/* Ajuste Dark Mode para Output */
-html.dark pre[data-language="text"], 
-html.dark pre[data-language="plaintext"] {
-    background-color: #0f172a !important; 
-    border-color: #334155;
+    font-size: 0.85em; /* Un pelín más pequeño */
 }
 
 /* =============================================================================

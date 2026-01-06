@@ -3,7 +3,7 @@ title: 'Pivoting con Metasploit en Linux'
 description: 'Técnicas de movimiento lateral usando Metasploit.'
 pubDate: '2025-12-21'
 categories: ['Red Team']
-tags: ['metasploit', 'pivoting', 'linux', 'lateral movement']
+tags: ['metasploit', 'pivoting', 'linux']
 heroImage: '../../assets/img/pivoting-metasploit-linux.jpg'
 slug: "pivoting-metasploit"
 

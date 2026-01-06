@@ -3,7 +3,7 @@ title: 'Cómo escapar de un contenedor Docker'
 description: 'Análisis de la vulnerabilidad de docker.sock expuesto.'
 pubDate: '2025-12-24'
 categories: ['Red Team']
-tags: ['docker', 'pentesting', 'linux', 'privesc']
+tags: ['docker', 'pentesting', 'linux']
 heroImage: '../../assets/img/docker_infografia.png'
 slug: "docker-vuln"
 ---
