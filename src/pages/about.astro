@@ -1,31 +1,242 @@
 ---
-import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
 import Layout from '../layouts/BlogPost.astro';
+
+// Datos de mis certificaciones
+const certifications = [
+  {
+    title: "eJPTv2",
+    role: "Junior Penetration Tester",
+    issuer: "INE Security",
+    date: "2025",
+    img: "/badges/ejpt.png", 
+    color: "rgba(239, 68, 68, 0.6)",
+    link: "https://certs.ine.com/b54bbe0e-3220-449e-85b7-098dfd82791b#acc.rTRJ2IcV"
+  },
+  {
+    title: "Google Cybersecurity",
+    role: "Professional Certificate",
+    issuer: "Google",
+    date: "2024",
+    img: "/badges/google.png", 
+    color: "rgba(66, 133, 244, 0.6)",
+    link: "https://www.coursera.org/account/accomplishments/specialization/J5T3FS3CLBD5" 
+  },
+  {
+    title: "SOC Level 1",
+    role: "Security Operations",
+    issuer: "TryHackMe",
+    date: "2025",
+    img: "/badges/thm-soc.png",
+    color: "rgba(16, 185, 129, 0.6)",
+    link: "https://tryhackme.com/p/J.avi?tab=certificates"
+  }
+];
 ---
 
 <Layout
 	title="Sobre mí"
-	description="¿Quién soy?"
-	pubDate={new Date('October 01 2025')}
-	#heroImage={AboutHeroImage}
+	description="Mi trayectoria en Ciberseguridad"
+	pubDate={new Date('November 01 2025')}
 >
-	<p>
-		Soy estudiante en 42 Telefónica Málaga y cuento con una sólida formación en Ingeniería en Tecnologías Industriales. 
-		Actualmente, curso el MOOC de Ciberseguridad de la Universidad de Málaga.
-	</p>
+    <section class="about-intro">
+        <p class="lead">
+            Soy estudiante en <strong>42 Telefónica Málaga</strong> y cuento con una sólida formación en <strong>Ingeniería en Tecnologías Industriales</strong>.
+        </p>
+        <p>
+            Actualmente, curso el MOOC de Ciberseguridad de la Universidad de Málaga. Me especializo en seguridad ofensiva y estoy preparándome para la certificación <strong>eCPPTv3 (Certified Professional Penetration Tester)</strong>.
+        </p>
+    </section>
 
-	<p>
-		Me especializo en ciberseguridad y estoy preparándome la certificación eCPPT. Cuento con más de un año de experiencia en el análisis de 
-		vulnerabilidades y el pentesting, validada por la certificación eJPT de INE y por los laboratorios prácticos y ‘paths’ de TryHackMe.
-	</p>
+    <hr class="divider" />
 
-	<p>
-		Trabajo de Formador de Competencias Digitales, promoviendo la ciberseguridad, la alfabetización digital y el impulso profesional. 
-		Tengo experiencia en lenguajes de programación como C, C++, ensamblador, SQL y scripting con Python.
-	</p>
+    <section class="certs-section">
+        <h2>Certificaciones</h2>
+        <p class="section-subtitle">Validación técnica de mis competencias.</p>
+        
+        <div class="certs-grid">
+            {certifications.map((cert) => (
+                <a href={cert.link} target="_blank" class="cert-card" style={`--glow-color: ${cert.color}`}>
+                    <div class="cert-icon">
+                        <img src={cert.img} alt={cert.title} />
+                    </div>
+                    <div class="cert-content">
+                        <h3>{cert.title}</h3>
+                        <span class="cert-role">{cert.role}</span>
+                        <div class="cert-meta">
+                            <span class="issuer">{cert.issuer}</span> • <span class="date">{cert.date}</span>
+                        </div>
+                    </div>
+                </a>
+            ))}
+        </div>
+    </section>
 
-	<p>
-		Mi perfil se caracteriza por una fuerte capacidad de resolución de problemas y una creciente pasión por el análisis de seguridad informática.
-	</p>
+    <hr class="divider" />
+
+    <section class="skills-section">
+        <h2> Experiencia</h2>
+        <p>
+            Cuento con más de un año de experiencia en <strong>análisis de vulnerabilidades y pentesting</strong>, validada por exámenes profesionales, laboratorios y entornos prácticos y rutas de TryHackMe.
+        </p>
+        <p>
+            Trabajo como <strong>Formador de Ciberseguridad y Competencias Digitales</strong>, promoviendo la seguridad informática, antifraude, la alfabetización digital y el impulso profesional. Mi perfil se caracteriza por una fuerte capacidad de resolución de problemas y pasión por aprender nuevas tecnologías.
+        </p>
+        <p>
+			Más allá de la terminal, mi otra gran pasión es la fotografía. Capturar el detalle que pasa desapercibido a simple vista es una filosofía que aplico tanto detrás de la cámara como analizando sistemas.
+        </p>
+
+        <div class="stack-category">
+                <h3>Lenguajes</h3>
+                <div class="tag-container">
+                    <span class="tag-pill tag-python">Python</span>
+                    <span class="tag-pill tag-c">C / C++</span>
+                    <span class="tag-pill">Assembler</span>
+                    
+                    <span class="tag-pill tag-javascript">JavaScript</span>
+                    <span class="tag-pill tag-bash">Bash</span>
+                    <span class="tag-pill tag-sql">SQL</span>
+                </div>
+            </div>
+            
+            <div class="stack-category">
+                <h3>Seguridad</h3>
+                <div class="tags">
+                    <span class="tag-pill tag-pentesting">Pentesting</span>
+                    <span class="tag-pill tag-hacking">Hacking Ético</span>
+                    <span class="tag-pill tag-blue-team">Análisis de Vulns</span>
+					<span class="tag-pill tag-sql">SOC Analyst</span>
+                </div>
+            </div>
+        </div>
+    </section>
 
 </Layout>
+
+<style>
+    /* Estilos específicos para esta página */
+    .lead {
+        font-size: 1.15rem;
+        line-height: 1.6;
+        color: var(--black);
+    }
+    
+    .divider {
+        margin: 2.5rem 0;
+        border-top: 1px solid rgba(var(--gray), 0.2);
+    }
+    
+    h2 {
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
+        font-weight: 800;
+        color: var(--black);
+    }
+    
+    .section-subtitle {
+        color: rgb(var(--gray));
+        margin-bottom: 1.5rem;
+        font-size: 0.95rem;
+    }
+
+    /* GRID DE CERTIFICACIONES */
+    .certs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1rem;
+    }
+
+    .cert-card {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        background: linear-gradient(145deg, var(--bg-color), rgba(var(--gray-light), 0.4));
+        border: 1px solid rgba(var(--gray), 0.2);
+        border-radius: 12px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .cert-card:hover {
+        transform: translateY(-3px);
+        border-color: var(--glow-color);
+        box-shadow: 0 4px 20px -5px var(--glow-color);
+    }
+
+    .cert-icon {
+        flex-shrink: 0;
+        width: 50px;
+        height: 50px;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 10px;
+        padding: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(var(--gray), 0.1);
+    }
+
+    .cert-icon img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .cert-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .cert-content h3 {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 700;
+        color: rgb(var(--black));
+    }
+
+    .cert-role {
+        font-size: 0.85rem;
+        color: var(--accent);
+        font-weight: 600;
+        margin-bottom: 2px;
+    }
+
+    .cert-meta {
+        font-size: 0.75rem;
+        color: rgb(var(--gray));
+        opacity: 0.8;
+    }
+
+    /* TECH STACK */
+    .tech-stack {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        margin-top: 1.5rem;
+    }
+    
+    .stack-category h3 {
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: rgb(var(--gray));
+        margin-bottom: 0.8rem;
+        font-weight: 700;
+    }
+
+    .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    /* Aseguramos que los tags se vean bien en móvil */
+    @media (max-width: 600px) {
+        .tech-stack {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+    }
+</style>
