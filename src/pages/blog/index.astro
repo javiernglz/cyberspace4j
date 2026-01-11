@@ -5,6 +5,7 @@ import Footer from '../../components/Footer.astro';
 import Header from '../../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
 
+// 1. LÓGICA EXISTENTE DE BLOG Y CATEGORÍAS
 const allPosts = await getCollection('blog');
 
 const categoryCounts: Record<string, number> = {};
@@ -62,6 +63,16 @@ const CATEGORY_IMAGES: Record<string, string> = {
 function getCategoryImage(categorySlug: string) {
     return CATEGORY_IMAGES[categorySlug] || CATEGORY_IMAGES['default'];
 }
+
+// 2. CONTADOR DE PROYECTOS
+// Calculamos cuántos proyectos hay para mostrar el número en la tarjeta
+let projectsCount = 0;
+try {
+    const allProjects = await getCollection('projects');
+    projectsCount = allProjects.length;
+} catch (e) {
+    console.log("No se cargaron proyectos");
+}
 ---
 
 <!doctype html>
@@ -76,37 +87,33 @@ function getCategoryImage(categorySlug: string) {
                 padding: 1rem 2rem 4rem 2rem;
             }
 
-            /* --- ESTILOS HERO (NUEVO) --- */
+            /* --- ESTILOS HERO --- */
             .hero-section {
                 text-align: center;
-                padding: 2rem 0 4rem 0; /* Espacio generoso */
+                padding: 2rem 0 4rem 0;
             }
 
             .brand-title {
-                font-size: 4.5rem; /* Título GIGANTE */
+                font-size: 4.5rem;
                 font-weight: 900;
                 margin: 0;
                 line-height: 1.1;
                 letter-spacing: -0.03em;
-                /* Degradado de texto base (Light Mode) */
                 background: linear-gradient(to right, #1f2937 20%, #64748b 100%);
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
                 background-clip: text;
             }
 
-            /* En dark mode, el título brilla más (Blanco a Morado Claro) */
             .dark .brand-title {
                 background: linear-gradient(to right, #ffffff 30%, #4e4c54 100%); 
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
                 background-clip: text;
-                /* Resplandor sutil */
                 filter: drop-shadow(0 0 30px rgba(124, 58, 237, 0.3)); 
             }
 
             .brand-accent {
-                /* El "4J" toma el color del acento global */
                 color: var(--accent); 
                 -webkit-text-fill-color: var(--accent);
             }
@@ -133,7 +140,7 @@ function getCategoryImage(categorySlug: string) {
                 font-weight: 700;
                 text-transform: uppercase;
                 letter-spacing: 0.1em;
-                font-size: 0.85rem; /* Estilo etiqueta pequeña */
+                font-size: 0.85rem;
                 opacity: 0.8;
             }
 
@@ -150,7 +157,7 @@ function getCategoryImage(categorySlug: string) {
                 position: relative;
                 display: flex;
                 flex-direction: column;
-                height: 220px;
+                height: 220px; /* ALTURA ESTÁNDAR */
                 padding: 2rem;
                 border-radius: 16px;
                 background: linear-gradient(135deg, rgba(var(--card-color-rgb), 0.15) 0%, var(--bg-color) 85%);
@@ -159,6 +166,12 @@ function getCategoryImage(categorySlug: string) {
                 transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
                 overflow: hidden;
                 box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            }
+            
+            /* PROYECTOS: ANCHO COMPLETO */
+            .project-card-wide {
+                grid-column: 1 / -1; 
+                /* Hereda la misma altura de 220px */
             }
 
             .dark .category-card {
@@ -235,18 +248,16 @@ function getCategoryImage(categorySlug: string) {
                 text-shadow: 0 2px 4px rgba(0,0,0,0.5);
             }
 
-            /* --- CONTENEDOR DE TAGS --- */
             .card-tags {
                 display: flex;
                 flex-wrap: wrap;
-                gap: 8px; /* Un poco más de espacio */
-                max-width: 65%;
+                gap: 8px;
+                max-width: 75%; 
                 margin-bottom: auto;
                 z-index: 1;
                 position: relative;
             }
 
-            /* --- ESTILO PILL BYTEBYTEGO --- */
             .mini-tag {
                 border-radius: 9999px; 
                 padding: 4px 12px;
@@ -276,11 +287,17 @@ function getCategoryImage(categorySlug: string) {
             }
             .category-card:hover .arrow-icon { opacity: 1; transform: translateX(0); }
 
+            /* --- COLORES --- */
             a[href*="blue-team"] { --card-color: #3b82f6; --card-color-rgb: 59, 130, 246; }
             a[href*="red-team"], a[href*="pentesting"] { --card-color: #ef4444; --card-color-rgb: 239, 68, 68; }
             a[href*="certificaciones"] { --card-color: #a855f7; --card-color-rgb: 168, 85, 247; }
             a[href*="docencia"], a[href*="teoria"] { --card-color: #f59e0b; --card-color-rgb: 245, 158, 11; }
-            a[href*="malware"], a[href*="yara"] { --card-color: #10b981; --card-color-rgb: 16, 185, 129; }
+            
+            /* COLOR PROYECTOS: VERDE (Ajustado para que detecte el enlace /projects) */
+            a[href*="/projects"] { 
+                --card-color: #10b981; 
+                --card-color-rgb: 16, 185, 129; 
+            }
 
             @media (max-width: 768px) { 
                 .category-grid { grid-template-columns: 1fr; } 
@@ -298,7 +315,7 @@ function getCategoryImage(categorySlug: string) {
                 <br>
                 <p class="brand-subtitle">
                     Artículos, documentos, "cheat sheets", guías y mucho más <br />
-                    <span class="highlight">Tu base de operaciones en ciberseguridad.</span>
+                    <span class="highlight">Mi portfolio de ciberseguridad.</span>
                 </p>
             </section>
 
@@ -337,6 +354,33 @@ function getCategoryImage(categorySlug: string) {
                         })
                     }
                 </div>
+
+                <div class="category-grid" style="margin-top: 2rem;">
+                    <a href="/projects" class="category-card project-card-wide">
+                        <div class="category-accent"></div>
+                        
+                        <img 
+                            class="card-icon-bg" 
+                            src="/icons/proyecto.png" 
+                            alt="" 
+                        />
+                        
+                        <h2 class="category-name">Proyectos</h2>
+                        
+                        <div class="card-tags">
+                            <span class="mini-tag">Tools</span>
+                            <span class="mini-tag">Scripts</span>
+                            <span class="mini-tag">Portfolio</span>
+                            <span class="mini-tag">Dev</span>
+                        </div>
+                        
+                        <div class="article-count">
+                            <span>{projectsCount} {projectsCount === 1 ? 'entrada' : 'entradas'}</span>
+                            <span class="arrow-icon">→</span>
+                        </div>
+                    </a>
+                </div>
+
             </section>
         </main>
         <Footer />

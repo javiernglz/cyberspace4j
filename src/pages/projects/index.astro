@@ -1,0 +1,206 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
+
+// Cargamos los proyectos y los ordenamos por fecha
+const projects = (await getCollection('projects')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<BaseHead title={`Proyectos - ${SITE_TITLE}`} description="Mis herramientas y desarrollos de ciberseguridad" />
+		<style>
+			main {
+				width: 100%;
+				max-width: 1100px;
+				margin: 0 auto;
+				padding: 3rem 2rem;
+			}
+            
+            /* Cabecera de la sección */
+            .section-header {
+                text-align: center;
+                margin-bottom: 4rem;
+                border-bottom: 1px solid rgba(var(--gray), 0.1);
+                padding-bottom: 2rem;
+            }
+            .section-title {
+                font-size: 3rem;
+                font-weight: 800;
+                margin-bottom: 0.5rem;
+            }
+            .section-desc {
+                color: rgb(var(--gray));
+                font-size: 1.2rem;
+                max-width: 600px;
+                margin: 0 auto;
+            }
+
+            /* Rejilla de Proyectos */
+			.project-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+				gap: 2rem;
+				list-style: none;
+				padding: 0;
+			}
+
+            /* Tarjeta de Proyecto */
+			.project-card {
+                background: linear-gradient(135deg, rgba(var(--gray), 0.03) 0%, var(--bg-color) 100%);
+				border: 1px solid rgba(var(--gray), 0.2);
+				border-radius: 16px;
+				overflow: hidden;
+				transition: all 0.3s ease;
+                text-decoration: none;
+                color: inherit;
+                display: flex;
+                flex-direction: column;
+                position: relative;
+                height: 100%;
+			}
+
+            /* Efecto Hover (Verde Terminal) */
+			.project-card:hover {
+				transform: translateY(-5px);
+				box-shadow: 0 10px 30px -10px rgba(16, 185, 129, 0.2); /* Sombra Verde */
+                border-color: #10b981;
+			}
+
+            .card-header {
+                padding: 1.5rem 1.5rem 0 1.5rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .project-icon {
+                width: 48px;
+                height: 48px;
+                background: rgba(16, 185, 129, 0.1);
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.5rem;
+                color: #10b981;
+                border: 1px solid rgba(16, 185, 129, 0.2);
+            }
+
+            .card-content {
+                padding: 1.5rem;
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .card-title {
+                margin: 0 0 0.5rem 0;
+                font-size: 1.4rem;
+                font-weight: 700;
+                color: var(--black);
+            }
+            .dark .card-title { color: white; }
+
+            .card-desc {
+                font-size: 0.95rem;
+                color: rgb(var(--gray));
+                margin-bottom: 1.5rem;
+                line-height: 1.5;
+                flex-grow: 1;
+            }
+
+            .tags {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                margin-top: auto;
+            }
+
+            .tag {
+                font-size: 0.75rem;
+                background: rgba(var(--gray), 0.1);
+                color: rgb(var(--gray));
+                padding: 0.2rem 0.6rem;
+                border-radius: 6px;
+                font-weight: 600;
+                border: 1px solid rgba(var(--gray), 0.2);
+            }
+
+            .project-card:hover .tag {
+                background: rgba(16, 185, 129, 0.1);
+                color: #10b981;
+                border-color: rgba(16, 185, 129, 0.2);
+            }
+            
+            /* Botón "Ver detalles" falso en la tarjeta */
+            .card-footer {
+                padding: 1rem 1.5rem;
+                border-top: 1px solid rgba(var(--gray), 0.1);
+                font-size: 0.9rem;
+                font-weight: 600;
+                color: #10b981;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            @media (max-width: 768px) {
+                .project-grid { grid-template-columns: 1fr; }
+            }
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+            <div class="section-header">
+                <h1 class="section-title">Laboratorio <span style="color: #10b981;">.Dev</span></h1>
+                <p class="section-desc">Colección de scripts, herramientas de pentesting y pruebas de concepto desarrolladas durante mi aprendizaje.</p>
+            </div>
+
+			<ul class="project-grid">
+				{
+					projects.map((project) => (
+						<li>
+							<a href={`/projects/${project.id}/`} class="project-card">
+                                <div class="card-header">
+                                    <div class="project-icon">
+                                        {project.data.icon ? (
+                                            <img src={project.data.icon} alt="" style="width: 24px; height: 24px;" />
+                                        ) : (
+                                            <span>&gt;_</span> 
+                                        )}
+                                    </div>
+                                    {project.data.link && (
+                                        <span style="font-size: 0.8rem; opacity: 0.7;">
+                                            <i class="fas fa-external-link-alt"></i>
+                                        </span>
+                                    )}
+                                </div>
+                                
+                                <div class="card-content">
+								    <h2 class="card-title">{project.data.title}</h2>
+                                    <p class="card-desc">{project.data.description}</p>
+                                    <div class="tags">
+                                        {project.data.tags?.map(tag => <span class="tag">#{tag}</span>)}
+                                    </div>
+                                </div>
+                                
+                                <div class="card-footer">
+                                    Ver documentación <span style="margin-left: auto;">→</span>
+                                </div>
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</main>
+		<Footer />
+	</body>
+</html>
