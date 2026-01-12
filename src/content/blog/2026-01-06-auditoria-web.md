@@ -3,7 +3,7 @@ title: 'Auditoría Web Real: De una fuga de IP al control total'
 description: 'Caso práctico: Cómo un fallo en la configuración de Cloudflare permitió acceder a la base de datos y ejecutar código en el servidor.'
 pubDate: '2026-01-06'
 categories: ['Red Team']
-tags: ['Web Exploitation', 'Pentesting', 'Red Team', 'Recon']
+tags: ['Web Exploitation', 'Pentesting', 'Red Team']
 slug: "auditoria-web-real-caso-practico"
 ---
 

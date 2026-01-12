@@ -3,7 +3,7 @@ title: 'Análisis de Malware: Documentos y URLs'
 description: 'Guía para analizar adjuntos y enlaces sospechosos (Blue Team).'
 pubDate: '2025-12-21'
 categories: ['Blue Team']
-tags: ['malware', 'analisis', 'forense']
+tags: ['malware', 'phishing', 'forense']
 heroImage: '../../assets/Portadas/iniciociber.png'
 slug: "scan-docs-urls"
 

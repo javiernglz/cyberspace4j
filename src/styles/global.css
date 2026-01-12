@@ -248,7 +248,7 @@ code {
 /* --- PALETA DE COLORES EXTENDIDA --- */
 
 /* 🔴 ROJO (Crítico, Errores, Danger) */
-.tag-critical, .tag-high, .tag-error, .tag-bug, 
+.tag-critical, .tag-pivoting, .tag-error, .tag-bug, 
 .tag-danger, .tag-red, .tag-pentesting, .tag-cve-critical {
     --bg-pill: #fee2e2;
     --text-pill: #b52e2e;
@@ -256,7 +256,7 @@ code {
 }
 
 /* 🍷 BURDEOS / VINO (Root, Kernel, Arquitectura, Legacy) */
-.tag-root, .tag-kernel, .tag-boot, .tag-bios, 
+.tag-root, .tag-kernel, .tag-web-exploitation, .tag-bios, 
 .tag-architecture, .tag-redteam, .tag-burdeos {
     --bg-pill: #f0d1d4;
     --text-pill: #881337; 
@@ -264,31 +264,32 @@ code {
 }
 
 /* 🧞 ÍNDIGO (Dev, API, SQL, GraphQL) */
-.tag-api, .tag-web-exploitation, .tag-rest, .tag-sql, 
-.tag-database, .tag-dev, .tag-indigo, .tag-coding {
+.tag-api, .tag-client-server, .tag-sql, 
+.tag-database, .tag-sysadmin, .tag-yara, .tag-active-directory {
     --bg-pill: #e0e7ff;
     --text-pill: #3730a3; 
     --border-pill: #c7d2fe;
 }
 
 /* ☀️ AMARILLO (JS, Python, Warnings, Config) */
-.tag-javascript, .tag-js, .tag-python, .tag-owasp, 
-.tag-config, .tag-yellow, .tag-json, .tag-yaml {
+.tag-javascript, .tag-js, .tag-python, .tag-owasp,
+.tag-roadmaps, .tag-guias, .tag-recursos, .tag-clases,
+.tag-config, .tag-yellow, .tag-json, .tag-phishing {
     --bg-pill: #fef9c3;
     --text-pill: #854d0e; 
     --border-pill: #fde047;
 }
 
 /* 🟢 PISTACHO / VERDE (Defensivo, Validado, Splunk) */
-.tag-splunk, .tag-blue-team, .tag-defensa, .tag-defense, 
-.tag-forensics, .tag-dfir, .tag-logs, .tag-siem, .tag-hunting { 
+.tag-splunk, .tag-blue-team, .tag-bash, .tag-defense, 
+.tag-forensics, .tag-dfir, .tag-logs, .tag-unix, .tag-hunting { 
     --bg-pill: #ecfccb; 
     --text-pill: #3f6212; 
     --border-pill: #d9f99d;
 }
 
 /* ☁️ TURQUESA / CIAN (Cloud, Redes, Docker) */
-.tag-docker, .tag-kubernetes, .tag-cloud, .tag-pivoting, 
+.tag-docker, .tag-forense, .tag-cloud, 
 .tag-azure, .tag-network, .tag-redes, .tag-sysadmin { 
     --bg-pill: #cffafe; 
     --text-pill: #155e75; 
@@ -297,7 +298,7 @@ code {
 
 /* 🟣 MORADO (Hacking, Red Team, Exploits) */
 .tag-red-team, .tag-hacking, .tag-exploit, 
-.tag-metasploit, .tag-malware, .tag-rce, .tag-ejpt, .tag-ecpptv3,
+.tag-ecppt, .tag-malware, .tag-rce, .tag-ejpt, .tag-ecpptv3,
  .tag-attack { 
     --bg-pill: #f3e8ff; 
     --text-pill: #7e22ce; 
@@ -305,16 +306,16 @@ code {
 }
 
 /* 🟠 NARANJA (Sistemas, Web, Apache) */
-.tag-web, .tag-apache, .tag-burp-suite, .tag-http, 
-.tag-linux, .tag-ubuntu, .tag-kali, .tag-orange { 
+.tag-web, .tag-apache, .tag-burp-suite, .tag-arquitectura, 
+.tag-linux, .tag-ubuntu, .tag-kali, .tag-c { 
     --bg-pill: #ffedd5; 
     --text-pill: #c2410c; 
     --border-pill: #fed7aa;
 }
 
 /* 🔵 AZUL ROYAL (Certificaciones, Windows, Active Directory) */
-.tag-certificaciones, .tag-oscp, 
-.tag-docencia, .tag-tutorial, .tag-windows, .tag-active-directory { 
+.tag-threat-hunting, .tag-siems, 
+.tag-metasploit, .tag-tutorial, .tag-windows, .tag-bt { 
     --bg-pill: #dbeafe; 
     --text-pill: #1d4ed8; 
     --border-pill: #bfdbfe;

@@ -3,7 +3,7 @@ title: 'Mis Clases de Ciberseguridad'
 description: 'Material y diapositivas sobre mis clases de hacking y defensa.'
 pubDate: '2025-12-03'
 categories: ['Docencia']
-tags: ['clases', 'roadmap', 'hacking', 'blue team']
+tags: ['clases', 'roadmaps', 'hacking', 'blue team']
 heroImage: '../../assets/Portadas/iniciociber.png'
 slug: "cyber-classes"
 

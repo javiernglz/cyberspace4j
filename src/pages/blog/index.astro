@@ -5,9 +5,16 @@ import Footer from '../../components/Footer.astro';
 import Header from '../../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
 
-// 1. LÓGICA EXISTENTE DE BLOG Y CATEGORÍAS
-const allPosts = await getCollection('blog');
+// --- 1. CONFIGURACIÓN MANUAL DE TAGS (LISTA EXACTA) ---
+const HIGHLIGHT_TAGS: Record<string, string[]> = {
+    'red-team': ['Active Directory', 'Pivoting', 'Web Exploitation', 'Burp Suite'],
+    'blue-team': ['SIEMs', 'Forense', 'Yara', 'Threat Hunting'],
+    'certificaciones': ['eJPT', 'eCPPT', 'Pentesting'],
+    'docencia': ['Clases', 'Roadmaps', 'Guías', 'Recursos']
+};
 
+// --- 2. LÓGICA DE BLOG ---
+const allPosts = await getCollection('blog');
 const categoryCounts: Record<string, number> = {};
 const categoryTags: Record<string, Set<string>> = {};
 
@@ -18,7 +25,6 @@ allPosts.forEach(post => {
     categories.forEach(category => {
         if (!categoryCounts[category]) categoryCounts[category] = 0;
         categoryCounts[category]++;
-
         if (!categoryTags[category]) categoryTags[category] = new Set();
         tags.forEach(tag => categoryTags[category].add(tag));
     });
@@ -33,7 +39,6 @@ function slugify(text: string) {
 }
 
 const CUSTOM_ORDER = ['red-team', 'blue-team', 'certificaciones', 'docencia'];
-
 const sortedCategories = Object.entries(categoryCounts).sort((a, b) => {
     const slugA = slugify(a[0]);
     const slugB = slugify(b[0]);
@@ -64,247 +69,162 @@ function getCategoryImage(categorySlug: string) {
     return CATEGORY_IMAGES[categorySlug] || CATEGORY_IMAGES['default'];
 }
 
-// 2. CONTADOR DE PROYECTOS
-// Calculamos cuántos proyectos hay para mostrar el número en la tarjeta
-let projectsCount = 0;
-try {
-    const allProjects = await getCollection('projects');
-    projectsCount = allProjects.length;
-} catch (e) {
-    console.log("No se cargaron proyectos");
+// --- 3. HELPER: Elige los tags manuales o automáticos ---
+function getTagsForCategory(categoryName: string) {
+    const slug = slugify(categoryName);
+    
+    // Si tenemos lista manual, la usamos
+    if (HIGHLIGHT_TAGS[slug]) {
+        return HIGHLIGHT_TAGS[slug];
+    }
+
+    // Si no, automático (pero filtramos el propio nombre de la categoría)
+    const autoTags = Array.from(categoryTags[categoryName] || []).slice(0, 6);
+    return autoTags.filter(tag => tag.toLowerCase() !== categoryName.toLowerCase());
 }
+
+// --- 4. FUNCIÓN CLASES CSS (MEJORADA PARA TILDES) ---
+const getTagClass = (tag: string) => {
+    return 'tag-' + tag.toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Magia: Convierte 'í' en 'i'
+        .replace(/\s+/g, '-')      // Espacios a guiones
+        .replace(/[^\w\-]+/g, ''); // Borra lo que no sea letra/número
+};
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="es">
     <head>
         <BaseHead title={`Blog - ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
         <style>
-            main { 
-                width: 100%; 
-                max-width: 1100px;
-                margin: 0 auto;
-                padding: 1rem 2rem 4rem 2rem;
-            }
+            main { width: 100%; max-width: 1100px; margin: 0 auto; padding: 1rem 2rem 4rem 2rem; }
 
-            /* --- ESTILOS HERO --- */
-            .hero-section {
-                text-align: center;
-                padding: 2rem 0 4rem 0;
-            }
-
+            /* --- HEADER --- */
+            .hero-section { text-align: center; padding: 2rem 0 4rem 0; }
             .brand-title {
-                font-size: 4.5rem;
-                font-weight: 900;
-                margin: 0;
-                line-height: 1.1;
-                letter-spacing: -0.03em;
+                font-size: 4.5rem; font-weight: 900; margin: 0; line-height: 1.1; letter-spacing: -0.03em;
                 background: linear-gradient(to right, #1f2937 20%, #64748b 100%);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
+                -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
             }
-
             .dark .brand-title {
-                background: linear-gradient(to right, #ffffff 30%, #4e4c54 100%); 
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-                filter: drop-shadow(0 0 30px rgba(124, 58, 237, 0.3)); 
+                background: linear-gradient(to right, #ffffff 30%, #4e4c54 100%);
+                -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+                filter: drop-shadow(0 0 30px rgba(124, 58, 237, 0.3));
             }
+            .brand-accent { color: var(--accent); -webkit-text-fill-color: var(--accent); }
+            .brand-subtitle { font-size: 1.3rem; color: rgb(var(--gray)); margin-top: 1.5rem; max-width: 600px; margin: 0 auto; line-height: 1.6; }
+            .highlight { color: var(--accent); font-weight: 600; }
+            .grid-title { text-align: center; color: rgb(var(--gray)); margin-bottom: 2rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.85rem; opacity: 0.8; }
 
-            .brand-accent {
-                color: var(--accent); 
-                -webkit-text-fill-color: var(--accent);
-            }
+            /* --- GRID --- */
+            .category-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; padding: 0; list-style: none; }
 
-            .brand-subtitle {
-                font-size: 1.3rem;
-                color: rgb(var(--gray));
-                margin-top: 1.5rem;
-                max-width: 600px;
-                margin-left: auto;
-                margin-right: auto;
-                line-height: 1.6;
-            }
-
-            .highlight {
-                color: var(--accent);
-                font-weight: 600;
-            }
-            
-            .grid-title {
-                text-align: center;
-                color: rgb(var(--gray));
-                margin-bottom: 2rem;
-                font-weight: 700;
-                text-transform: uppercase;
-                letter-spacing: 0.1em;
-                font-size: 0.85rem;
-                opacity: 0.8;
-            }
-
-            /* --- GRID Y TARJETAS --- */
-            .category-grid {
-                display: grid;
-                grid-template-columns: 1fr 1fr; 
-                gap: 2rem;
-                padding: 0;
-                list-style: none;
-            }
-
+            /* --- TARJETAS CATEGORÍA (Principal) --- */
             .category-card {
-                position: relative;
-                display: flex;
-                flex-direction: column;
-                height: 220px; /* ALTURA ESTÁNDAR */
-                padding: 2rem;
-                border-radius: 16px;
-                background: linear-gradient(135deg, rgba(var(--card-color-rgb), 0.15) 0%, var(--bg-color) 85%);
-                border: 1px solid rgba(var(--gray), 0.2);
-                text-decoration: none;
-                transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-                overflow: hidden;
-                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+                position: relative; display: flex; flex-direction: column; height: 220px; padding: 2rem;
+                border-radius: 16px; background: linear-gradient(135deg, rgba(var(--card-color-rgb), 0.15) 0%, var(--bg-color) 85%);
+                border: 1px solid rgba(var(--gray), 0.2); text-decoration: none; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+                overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             }
-            
-            /* PROYECTOS: ANCHO COMPLETO */
-            .project-card-wide {
-                grid-column: 1 / -1; 
-                /* Hereda la misma altura de 220px */
-            }
-
             .dark .category-card {
-                background-color: #171923; 
-                background-image: linear-gradient(
-                    135deg, 
-                    rgba(255, 255, 255, 0.03) 0%, 
-                    rgba(var(--card-color-rgb), 0.15) 100%
-                );
-                border: 1px solid rgba(var(--card-color-rgb), 0.3);
-                box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.5);
+                background-color: #171923;
+                background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(var(--card-color-rgb), 0.15) 100%);
+                border: 1px solid rgba(var(--card-color-rgb), 0.3); box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.5);
             }
-
             .category-card:hover {
-                transform: translateY(-4px);
-                box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.2);
+                transform: translateY(-4px); box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.2);
                 border-color: rgba(var(--card-color-rgb), 0.6);
                 background: linear-gradient(135deg, rgba(var(--card-color-rgb), 0.25) 0%, var(--bg-color) 90%);
             }
-            
-            .dark .category-card:hover {
-                 background-image: linear-gradient(
-                    135deg, 
-                    rgba(255, 255, 255, 0.05) 0%, 
-                    rgba(var(--card-color-rgb), 0.30) 100%
-                );
-                border-color: rgba(var(--card-color-rgb), 0.6);
-                box-shadow: 0 10px 30px -5px rgba(var(--card-color-rgb), 0.15);
-            }
-
-            .category-accent {
-                position: absolute; top: 0; left: 0; width: 100%; height: 4px;
-                background-color: var(--card-color);
-                box-shadow: 0 2px 10px var(--card-color);
-            }
-
+            .category-accent { position: absolute; top: 0; left: 0; width: 100%; height: 4px; background-color: var(--card-color); box-shadow: 0 2px 10px var(--card-color); }
             .card-icon-bg {
-                position: absolute;
-                width: 160px;
-                height: auto;
-                bottom: -20px;
-                right: -20px;
-                opacity: 0.5;
-                transform: rotate(-10deg);
-                transition: all 0.4s ease;
-                z-index: 0;
-                pointer-events: none;
-                mix-blend-mode: normal; 
+                position: absolute; width: 160px; height: auto; bottom: -20px; right: -20px; opacity: 0.5;
+                transform: rotate(-10deg); transition: all 0.4s ease; z-index: 0; pointer-events: none;
             }
-
-            .dark .card-icon-bg { 
-                opacity: 0.6; 
-                filter: drop-shadow(0 0 10px rgba(var(--card-color-rgb), 0.3));
-            }
-
-            .category-card:hover .card-icon-bg {
-                transform: rotate(0deg) scale(1.1);
-                opacity: 0.9;
-                bottom: -15px;
-                right: -15px;
-            }
-
-            .category-name {
-                font-size: 1.8rem;
-                font-weight: 800;
-                color: rgb(var(--black));
-                margin: 0 0 1rem 0;
-                z-index: 1;
-                position: relative;
-            }
+            .category-card:hover .card-icon-bg { transform: rotate(0deg) scale(1.1); opacity: 0.9; bottom: -15px; right: -15px; }
+            .category-name { font-size: 1.8rem; font-weight: 800; color: rgb(var(--black)); margin: 0 0 1rem 0; z-index: 1; position: relative; }
+            .dark .category-name { color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
             
-            .dark .category-name {
-                color: #ffffff;
-                text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-            }
-
-            .card-tags {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 8px;
-                max-width: 75%; 
-                margin-bottom: auto;
-                z-index: 1;
-                position: relative;
-            }
-
-            .mini-tag {
-                border-radius: 9999px; 
-                padding: 4px 12px;
-                font-size: 0.75rem;
-                font-weight: 700;
-                background-color: rgba(var(--card-color-rgb), 0.15);
-                color: var(--card-color);
-                border: 1px solid rgba(var(--card-color-rgb), 0.2);
-                white-space: nowrap;
-                transition: all 0.2s ease;
-            }
-
-            .dark .mini-tag {
-                background-color: rgba(var(--card-color-rgb), 0.2);
-                color: #ffffff;
-                border: 1px solid rgba(var(--card-color-rgb), 0.4);
-                text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-            }
-
-            .article-count {
-                font-size: 0.95rem; font-weight: 500; color: rgb(var(--gray));
-                display: flex; align-items: center; gap: 8px; z-index: 1; position: relative;
-                margin-top: 1rem;
-            }
-            .arrow-icon {
-                opacity: 0; transform: translateX(-10px); transition: all 0.3s ease; color: var(--card-color);
-            }
+            .article-count { font-size: 0.95rem; font-weight: 500; color: rgb(var(--gray)); display: flex; align-items: center; gap: 8px; z-index: 1; position: relative; margin-top: 1rem; }
+            .arrow-icon { opacity: 0; transform: translateX(-10px); transition: all 0.3s ease; color: var(--card-color); }
             .category-card:hover .arrow-icon { opacity: 1; transform: translateX(0); }
 
-            /* --- COLORES --- */
+            /* --- TARJETA PROYECTOS WIDE --- */
+            .project-card-wide {
+                grid-column: 1 / -1; 
+                height: auto; 
+                min-height: 300px;
+            }
+
+            .projects-preview-container {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+                width: 95%; 
+                z-index: 2;
+                margin-bottom: auto;
+                margin-top: 0.5rem;
+            }
+
+            .mini-category-card {
+                display: flex;
+                flex-direction: column;
+                padding: 1.2rem;
+                border-radius: 12px;
+                background: rgba(255, 255, 255, 0.7); 
+                border: 1px solid rgba(var(--card-color-rgb), 0.3);
+                text-decoration: none;
+                transition: all 0.3s ease;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+                position: relative;
+                overflow: hidden;
+            }
+            .dark .mini-category-card {
+                background: rgba(0, 0, 0, 0.4); 
+                border-color: rgba(var(--card-color-rgb), 0.4);
+            }
+            .mini-category-card:hover {
+                transform: translateY(-3px);
+                background: rgba(255, 255, 255, 0.95);
+                border-color: var(--card-color);
+                box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            }
+            .dark .mini-category-card:hover {
+                background: rgba(0, 0, 0, 0.6);
+            }
+
+            .mini-title {
+                font-size: 1.2rem;
+                font-weight: 800;
+                color: rgb(var(--black));
+                margin-bottom: 0.5rem;
+                margin-top: 0.5rem;
+            }
+            .dark .mini-title { color: #fff; }
+
+            .mini-desc {
+                font-size: 0.85rem;
+                color: rgb(var(--gray));
+                line-height: 1.4;
+                margin-bottom: 0.5rem;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+            
+            @media (max-width: 700px) {
+                .projects-preview-container { grid-template-columns: 1fr; } 
+            }
+
+            /* COLORES */
             a[href*="blue-team"] { --card-color: #3b82f6; --card-color-rgb: 59, 130, 246; }
             a[href*="red-team"], a[href*="pentesting"] { --card-color: #ef4444; --card-color-rgb: 239, 68, 68; }
             a[href*="certificaciones"] { --card-color: #a855f7; --card-color-rgb: 168, 85, 247; }
-            a[href*="docencia"], a[href*="teoria"] { --card-color: #f59e0b; --card-color-rgb: 245, 158, 11; }
-            
-            /* COLOR PROYECTOS: VERDE (Ajustado para que detecte el enlace /projects) */
-            a[href*="/projects"] { 
-                --card-color: #10b981; 
-                --card-color-rgb: 16, 185, 129; 
-            }
+            a[href*="docencia"] { --card-color: #f59e0b; --card-color-rgb: 245, 158, 11; }
+            a[href*="/projects"] { --card-color: #10b981; --card-color-rgb: 16, 185, 129; } 
 
-            @media (max-width: 768px) { 
-                .category-grid { grid-template-columns: 1fr; } 
-                main { padding: 1rem; }
-                .card-tags { max-width: 100%; } 
-                .brand-title { font-size: 3rem; }
-            }
+            @media (max-width: 768px) { .category-grid { grid-template-columns: 1fr; } main { padding: 1rem; } }
         </style>
     </head>
     <body>
@@ -312,7 +232,6 @@ try {
         <main>
             <section class="hero-section">
                 <h1 class="brand-title">CyberSpace<span class="brand-accent">4J</span></h1>
-                <br>
                 <p class="brand-subtitle">
                     Artículos, documentos, "cheat sheets", guías y mucho más <br />
                     <span class="highlight">Mi portfolio de ciberseguridad.</span>
@@ -321,66 +240,75 @@ try {
 
             <section>
                 <h2 class="grid-title">Categorías</h2>
-                
                 <div class="category-grid">
-                    {
-                        sortedCategories.map(([category, count]) => {
-                            const slug = slugify(category);
-                            const tags = Array.from(categoryTags[category] || []).slice(0, 6);
+                    
+                    {/* 1. CATEGORÍAS (Usando tu lista manual HIGHLIGHT_TAGS) */}
+                    {sortedCategories.map(([category, count]) => {
+                        const slug = slugify(category);
+                        const tags = getTagsForCategory(category); 
+                        return (
+                            <a href={`/category/${slug}/`} class="category-card">
+                                <div class="category-accent"></div>
+                                <img class="card-icon-bg" src={getCategoryImage(slug)} alt="" />
+                                
+                                {/* TAGS ARRIBA (Estilo Pulido) */}
+                                <div class="tag-container">
+                                    {tags.map(tag => (
+                                        <span class={`tag-pill ${getTagClass(tag)}`}>
+                                            {tag}
+                                        </span>
+                                    ))}
+                                </div>
 
-                            return (
-                                <a href={`/category/${slug}/`} class="category-card">
-                                    <div class="category-accent"></div>
-                                    <img 
-                                        class="card-icon-bg" 
-                                        src={getCategoryImage(slug)} 
-                                        alt="" 
-                                    />
-                                    
-                                    <h2 class="category-name">{category}</h2>
-                                    
-                                    <div class="card-tags">
-                                        {tags.map(tag => (
-                                            <span class="mini-tag">{tag}</span>
-                                        ))}
-                                    </div>
+                                <h2 class="category-name">{category}</h2>
+                                <div class="article-count">
+                                    <span>{count} {count === 1 ? 'entrada' : 'entradas'}</span>
+                                    <span class="arrow-icon">→</span>
+                                </div>
+                            </a>
+                        );
+                    })}
 
-                                    <div class="article-count">
-                                        <span>{count} {count === 1 ? 'entrada' : 'entradas'}</span>
-                                        <span class="arrow-icon">→</span>
-                                    </div>
-                                </a>
-                            );
-                        })
-                    }
-                </div>
-
-                <div class="category-grid" style="margin-top: 2rem;">
+                    {/* 2. PROYECTOS WIDE (Con tus tags específicos) */}
                     <a href="/projects" class="category-card project-card-wide">
                         <div class="category-accent"></div>
-                        
-                        <img 
-                            class="card-icon-bg" 
-                            src="/icons/proyecto.png" 
-                            alt="" 
-                        />
+                        <img class="card-icon-bg" src="/icons/proyecto.png" alt="" />
                         
                         <h2 class="category-name">Proyectos</h2>
-                        
-                        <div class="card-tags">
-                            <span class="mini-tag">Tools</span>
-                            <span class="mini-tag">Scripts</span>
-                            <span class="mini-tag">Portfolio</span>
-                            <span class="mini-tag">Dev</span>
+
+                        <div class="projects-preview-container">
+                            
+                            {/* INCEPTION */}
+                            <div class="mini-category-card">
+                                <div class="tag-container">
+                                    <span class={`tag-pill ${getTagClass('Docker')}`}>Docker</span>
+                                    <span class={`tag-pill ${getTagClass('arquitectura')}`}>Arquitectura</span>
+                                    <span class={`tag-pill ${getTagClass('Bash')}`}>Bash</span>
+                                </div>
+                                <span class="mini-title">Inception</span>
+                                <span class="mini-desc">Infraestructura Dockerizada segura con Nginx, MariaDB y WordPress aislados.</span>
+                            </div>
+
+                            {/* MINITALK */}
+                            <div class="mini-category-card">
+                                <div class="tag-container">
+                                    <span class={`tag-pill ${getTagClass('C')}`}>C</span>
+                                    <span class={`tag-pill ${getTagClass('Unix')}`}>Unix</span>
+                                    <span class={`tag-pill ${getTagClass('Client-Server')}`}>Client-Server</span>
+                                </div>
+                                <span class="mini-title">Minitalk</span>
+                                <span class="mini-desc">Comunicación cliente-servidor mediante señales UNIX (SIGUSR1/2) en C.</span>
+                            </div>
+
                         </div>
-                        
+
                         <div class="article-count">
-                            <span>{projectsCount} {projectsCount === 1 ? 'entrada' : 'entradas'}</span>
+                            <span>Ver todos los proyectos</span>
                             <span class="arrow-icon">→</span>
                         </div>
                     </a>
-                </div>
 
+                </div>
             </section>
         </main>
         <Footer />

@@ -4,7 +4,7 @@ description: "Guía rápida para investigar alertas de procesos inusuales en Apa
 pubDate: 2025-12-28
 author: "Javier N. González"
 categories: ['Blue Team']
-tags: ["Apache", "blue team", "splunk", "RCE"]
+tags: ["Apache", "splunk", "RCE"]
 slug: "rce-splunk"
 
 ---
